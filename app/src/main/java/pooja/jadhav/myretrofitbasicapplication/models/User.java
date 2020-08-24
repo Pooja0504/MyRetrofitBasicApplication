@@ -11,7 +11,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
+                ", create_at='" + created_at + '\'' +
                 '}';
     }
 
@@ -27,9 +27,9 @@ public class User {
     @SerializedName("phone")
     @Expose
     private String phone;
-    @SerializedName("password")
+    @SerializedName("created_at")
     @Expose
-    private String password;
+    private String created_at;
 
     public String getResponse() {
         return response;
@@ -63,12 +63,12 @@ public class User {
         this.phone = phone;
     }
 
-    public String getPassword() {
-        return password;
+    public String getCreatedAt() {
+        return created_at;
     }
 
-    public void setPassword(String created_at) {
-        this.password = password;
+    public void setCreatedAt(String created_at) {
+        this.created_at = created_at;
     }
 
 }

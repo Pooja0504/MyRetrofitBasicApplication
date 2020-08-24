@@ -26,10 +26,29 @@ public class MainActivity extends AppCompatActivity implements MyInterface {
         container_fragment = findViewById(R.id.fragment_container);
         appPreference = new AppPreference(this);
         serviceApi= RetrofitClient.getApiClient(Constant.baseUrl.BASE_URL).create(ServiceApi.class);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.fragment_container, new LoginFragment())
-                .commit();
+        if(container_fragment!=null)
+        {
+            if(savedInstanceState!=null)
+            {
+                return;
+            }
+            if(appPreference.getLoginStatus())
+            {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container, new ProfileFragment())
+                        .commit();
+
+
+            }else{
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .add(R.id.fragment_container, new LoginFragment())
+                        .commit();
+
+
+            }
+        }
 
     }
 
@@ -45,6 +64,10 @@ public class MainActivity extends AppCompatActivity implements MyInterface {
 
     @Override
     public void login(String name, String email, String created_at) {
+        appPreference.setLoginStatus(true);
+        appPreference.setDisplayName(name);
+        appPreference.setDisplayemail(email);
+        appPreference.setDisplaydate(created_at);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, new ProfileFragment())
@@ -56,6 +79,10 @@ public class MainActivity extends AppCompatActivity implements MyInterface {
 
     @Override
     public void logout() {
+        appPreference.setLoginStatus(false);
+        appPreference.setDisplayName("Name");
+        appPreference.setDisplayemail("Email");
+        appPreference.setDisplaydate("Date");
 
         getSupportFragmentManager()
                 .beginTransaction()

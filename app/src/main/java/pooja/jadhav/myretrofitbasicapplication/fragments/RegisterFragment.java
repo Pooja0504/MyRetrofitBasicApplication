@@ -1,4 +1,6 @@
 package pooja.jadhav.myretrofitbasicapplication.fragments;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import java.util.regex.Pattern;
@@ -96,7 +99,16 @@ public class RegisterFragment extends Fragment {
             userCall.enqueue(new Callback<User>() {
                 @Override
                 public void onResponse(@NonNull Call<User> call,@NonNull Response<User> response) {
-                    Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+                    if(response.body().getResponse().matches("inserted"))
+                    {
+                        show_Message("Successfully Registered!!","Welcome "+name);
+                       // Toast.makeText(getActivity(), "Success", Toast.LENGTH_SHORT).show();
+                    }else if(response.body().getResponse().matches("exists"))
+                    {
+                        show_Message("Already registered user!!","Welcome "+name);
+                      //  Toast.makeText(getActivity(), "User already exists!!!!", Toast.LENGTH_SHORT).show();
+                    }
+
                     Log.i("My response",response.body().getResponse());
                 }
 
@@ -107,5 +119,19 @@ public class RegisterFragment extends Fragment {
                 }
             });
         }
+    }
+    private void show_Message(String title, String input)
+    {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle(title);
+        builder.setMessage(input);
+        builder.setCancelable(true);
+        builder.show();
+    }
+    private void clearText () {
+        email_input.setText("");
+        name_input.setText("");
+        password_input.setText("");
+        phone_input.requestFocus();
     }
 }
